@@ -12,6 +12,8 @@ def agregar_tarea():
         prioridad = data.get('prioridad')
         if not tarea or not prioridad:
             return jsonify({'error': 'Los campos no pueden estar vacíos'}), 400
+        if type(prioridad) != int:
+            return jsonify({'error': 'La prioridad debe ser un número entre 1 y 5'}), 400
         try:
             prioridad = int(prioridad)
         except ValueError:
@@ -41,8 +43,12 @@ def obtener_tareas():
     except:
         return jsonify({f"mensaje": "Ha ocurrido un error."}), 400
     
-@tareas_blueprint.route('/completar/<int:id>', methods=['PUT'])
+@tareas_blueprint.route('/completar/<id>', methods=['PUT'])
 def actualizar_tarea(id):
+    try:
+        id = int(id)
+    except ValueError:
+        return jsonify({'error': 'El id debe ser un número entero'}), 400
     try:
         tarea = Tareas.query.get(id)
         if tarea:
@@ -55,8 +61,12 @@ def actualizar_tarea(id):
     except Exception as e: 
         return jsonify({'error': 'Ha ocurrido un error'}), 500
 
-@tareas_blueprint.route('/eliminar/<int:id>', methods=['DELETE'])
+@tareas_blueprint.route('/eliminar/<id>', methods=['DELETE'])
 def eliminar_tarea(id):
+    try:
+        id = int(id)
+    except ValueError:
+        return jsonify({'error': 'El id debe ser un número entero'}), 400
     try:
         tarea = Tareas.query.get(id)
         if tarea:
