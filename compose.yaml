@@ -1,0 +1,41 @@
+services:
+  app:
+    container_name: python-flask-app-container
+    platform: linux/x86_64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: vicente
+      MYSQL_PASSWORD: 1234
+      MYSQL_DB: tareas
+      MYSQL_PORT: 3306
+    networks:
+      - mysql-python-app-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-flask-app-container
+    platform: linux/x86_64
+    ports:
+    - "3306:3306"
+    volumes:
+      - tareas-mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: tareas
+      MYSQL_USER: vicente
+      MYSQL_PASSWORD: 1234
+
+networks:
+  mysql-python-app-network:
+    name: mysql-python-app-network
+
+volumes:
+  todo-mysql-data:
