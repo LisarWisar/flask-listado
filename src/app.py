@@ -10,14 +10,13 @@ app = Flask(__name__)
 # Old SQlite DB
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 # New MySQL DB
-user = os.getenv("MYSQL_USER")
+user = os.getenv("MYSQL_USER", "root")
 password = os.getenv("MYSQL_PASSWORD:")
-host = os.getenv("MYSQL_HOST")
-port = os.getenv("MYSQL_PORT")
+host = os.getenv("MYSQL_HOST", "mysql")
+port = os.getenv("MYSQL_PORT", "3306")
 database = os.getenv("MYSQL_DB")
 
-connection_str = f"mysql://{user}:{password}@{datanase}:{port}/{datbase}"
-app.config['SQLALCHEMY_DATABASE_URI'] = connection_str
+app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql://{user}:{password}@{host}:{port}/{database}"
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.register_blueprint(tareas_blueprint, url_prefix="/tareas")

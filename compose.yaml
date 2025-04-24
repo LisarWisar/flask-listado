@@ -9,15 +9,13 @@ services:
       - "5000:5000"
     working_dir: /app
     volumes:
-      - ./:/app
+      - .:/app
     environment:
       MYSQL_HOST: mysql
       MYSQL_USER: vicente
       MYSQL_PASSWORD: 1234
       MYSQL_DB: tareas
       MYSQL_PORT: 3306
-    networks:
-      - mysql-python-app-network
 
   mysql:
     image: mysql:8.0
@@ -33,9 +31,9 @@ services:
       MYSQL_USER: vicente
       MYSQL_PASSWORD: 1234
 
-networks:
-  mysql-python-app-network:
-    name: mysql-python-app-network
+#networks:
+#  mysql-python-app-network:
+#    name: mysql-python-app-network
 
 volumes:
-  todo-mysql-data:
+  tareas-mysql-data:
