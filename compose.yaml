@@ -8,6 +8,7 @@ services:
     ports:
       - "5000:5000"
     working_dir: /app
+    restart: unless-stopped
     volumes:
       - .:/app
     environment:
@@ -22,7 +23,7 @@ services:
     container_name: mysql-flask-app-container
     platform: linux/x86_64
     ports:
-    - "3306:3306"
+    - "3307:3306"
     volumes:
       - tareas-mysql-data:/var/lib/mysql
     environment:
