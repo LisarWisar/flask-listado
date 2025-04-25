@@ -40,8 +40,8 @@ def obtener_tareas():
             return jsonify({"mensaje": "No hay tareas disponibles."}), 200
         tareas_id = [{"id": t.id, "tarea": t.nombre, "prioridad": t.prioridad, "estado": t.estado} for t in tareas]
         return jsonify(tareas_id), 200
-    except:
-        return jsonify({f"mensaje": "Ha ocurrido un error."}), 400
+    except Exception as e:
+        return jsonify({"mensaje": str(e)}), 400
     
 @tareas_blueprint.route('/completar/<id>', methods=['PUT'])
 def actualizar_tarea(id):

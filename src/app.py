@@ -1,8 +1,8 @@
 from flask import Flask
 from flask_cors import CORS
-from flask_migrate import Migrate, upgrade
+from flask_migrate import Migrate
 from blueprints.tareas import tareas_blueprint
-from models import db
+from models import db, Tareas
 import pymysql
 import os
 import time
@@ -10,13 +10,13 @@ import time
 app = Flask(__name__)
 
 user = os.getenv("MYSQL_USER", "root")
-password = os.getenv("MYSQL_PASSWORD:")
+password = os.getenv("MYSQL_PASSWORD")
 host = os.getenv("MYSQL_HOST", "mysql")
 port = os.getenv("MYSQL_PORT", "3306")
-database = os.getenv("MYSQL_DB")
+database = os.getenv("MYSQL_DATABASE")
 
 def espera_inicio(retries=5, delay=5):
-    user = os.getenv('MYSQL_USERNAME', "root")
+    user = os.getenv('MYSQL_USER', "root")
     password = os.getenv('MYSQL_PASSWORD')
     host = os.getenv('MYSQL_HOST', "mysql")  
     port = os.getenv('MYSQL_PORT')
