@@ -9,6 +9,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
+      - "2222:22"
     working_dir: /app
     restart: unless-stopped
     volumes:
