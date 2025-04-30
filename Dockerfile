@@ -1,5 +1,5 @@
 FROM python:3.12-slim
-RUN apt-get update && apt-get install -y openssh-server build-essential gcc curl && \
+RUN apt-get update && apt-get install -y openssh-server passwd build-essential gcc curl && \
 mkdir /var/run/sshd
 RUN useradd -m -s /bin/bash usuario && \ echo "usuario:1234" | chpasswd
 RUN sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
