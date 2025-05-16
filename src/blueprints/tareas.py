@@ -53,13 +53,47 @@ def actualizar_tarea(id):
         tarea = Tareas.query.get(id)
         if tarea:
             if tarea.estado == "Completado":
-                return jsonify({"mensaje": "Esta tarea ya se encuentra completada."}), 200
-            tarea.estado = "Completado"
+                tarea.estado = "Pendiente"
+            elif tarea.estado == "Pendiente":
+                tarea.estado = "Completado"
             db.session.commit()
-            return jsonify({'mensaje': 'Tarea Completada'}), 201
+            return jsonify({'mensaje': 'El estado de la tarea ha sido modificado exitosamente'}), 201
         return jsonify({'error': 'Tarea no encontrada'}), 404 
     except Exception as e: 
         return jsonify({'error': 'Ha ocurrido un error'}), 500
+
+@tareas_blueprint.route('editar/<id>', methods=['PUT'])
+def editar_tarea(id):
+    try:
+        id = int(id)
+    except ValueError:
+        return jsonify({'error': 'El id debe ser un número entero'}), 400
+    try:
+        data = request.get_json()
+        data = {key.lower(): value for key, value in data.items()}
+        nombre = data.get('tarea')
+        prioridad = data.get("prioridad")
+        if not nombre or not prioridad:
+            return jsonify({'error': 'Los campos no pueden estar vacíos'}), 400
+        if type(prioridad) != int:
+            return jsonify({'error': 'La prioridad debe ser un número entre 1 y 5'}), 400
+        try:
+            prioridad = int(prioridad)
+        except ValueError:
+            return jsonify({'error': 'La prioridad debe ser un número entre 1 y 5'}), 400
+        if not (1 <= prioridad <= 5):
+            return jsonify({'error': 'La prioridad debe ser un número entre 1 y 5'}), 400
+        tarea = Tareas.query.get(id)
+        if tarea:
+            tarea.nombre = nombre
+            tarea.prioridad = prioridad
+            db.session.commit()
+            return jsonify({'mensaje': 'Tarea editada exitosamente'}), 201
+        return jsonify({'error': 'Tarea no encontrada'}), 404 
+    except ValueError:
+        return jsonify({'error': 'Ha ocurrido un error'}), 400
+    except Exception as e:
+        return jsonify({'error': "Ha ocurrido un error"}), 500
 
 @tareas_blueprint.route('/eliminar/<id>', methods=['DELETE'])
 def eliminar_tarea(id):
